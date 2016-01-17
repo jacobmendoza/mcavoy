@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'rspec'
+gem 'mongo_mapper'
+gem 'twitter'
