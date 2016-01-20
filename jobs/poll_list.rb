@@ -7,6 +7,8 @@ def bootstrap
   Dir["#{base_dir}/domain/twitter/*.rb"].each { |file| require file }
   Dir["#{base_dir}/domain/models/*.rb"].each { |file| require file }
   Dir["#{base_dir}/domain/handlers/*.rb"].each { |file| require file }
+  Dir["#{base_dir}/domain/services/*.rb"].each { |file| require file }
+  Dir["#{base_dir}/domain/operations/*.rb"].each { |file| require file }
 
   database_uri = ConfigurationLoader.new.database_uri
 

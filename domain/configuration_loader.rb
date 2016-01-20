@@ -1,5 +1,10 @@
 require 'yaml'
 
+SYSTEM_POLL_INTERVAL = 60
+YELLOW = 0.75
+ORANGE = 0.85
+RED = 0.95
+
 # ConfigurationLoader
 # Loads the configuration from a YAML file.
 # Improve:

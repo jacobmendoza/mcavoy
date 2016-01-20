@@ -1,6 +1,6 @@
 # InsertTweetCommandHandler
 # Stores a tweet coming from the API, mapping the fields.
-class InsertTweetCommandHandler
+class InsertTweetOperation
   def initialize(tweet)
     @tweet = tweet
   end

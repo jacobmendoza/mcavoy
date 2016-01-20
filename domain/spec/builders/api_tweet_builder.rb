@@ -1,10 +1,12 @@
 # Helper for building tweets for the tests
-class TweetBuilder
+class ApiTweetBuilder
   attr_accessor :id, :created_at, :source_created_at,
-                :text, :user, :retweet_count, :favorite_count
+                :text, :user, :retweet_count, :favorite_count,
+                :tweet_updates
 
   def initialize
-    self.user = TweetUserBuilder.new
+    self.user = ApiTweetUserBuilder.new
+    self.tweet_updates = []
   end
 
   def with_id(new_id)
@@ -44,6 +46,11 @@ class TweetBuilder
 
   def with_retweet_count(new_rt_count)
     self.retweet_count = new_rt_count
+    self
+  end
+
+  def with_update(update)
+    tweet_updates << update
     self
   end
 end

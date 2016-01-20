@@ -1,7 +1,7 @@
 # UpdateTweetCommandHandler
 # Updates a tweet in the persistent storage with the new values favorite_count
 # retweets and favorites.
-class UpdateTweetCommandHandler
+class UpdateTweetOperation
   def initialize(tweet, existing_document)
     fail 'no tweet has been specified' if tweet.nil?
     fail 'no existing document specified' if existing_document.nil?

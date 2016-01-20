@@ -1,21 +1,21 @@
-RSpec.describe UpdateTweetCommandHandler do
+RSpec.describe UpdateTweetOperation do
   describe 'when creating the handler' do
     it 'fails if no tweet has been provided' do
       expect {
-        UpdateTweetCommandHandler.new(nil, {})
+        UpdateTweetOperation.new(nil, {})
       }.to raise_error('no tweet has been specified')
     end
 
     it 'fails if no document has been provided' do
       expect {
-        UpdateTweetCommandHandler.new({}, nil)
+        UpdateTweetOperation.new({}, nil)
       }.to raise_error('no existing document specified')
     end
   end
 
   describe 'when executing the handler' do
     let(:tweet_from_api) {
-      TweetBuilder
+      ApiTweetBuilder
         .new
         .with_id(123_456)
         .with_favorite_count(1)
@@ -33,7 +33,7 @@ RSpec.describe UpdateTweetCommandHandler do
       tweet
     }
 
-    let(:handler) { UpdateTweetCommandHandler.new(tweet_from_api, stored_tweet) }
+    let(:handler) { UpdateTweetOperation.new(tweet_from_api, stored_tweet) }
 
     before do
       handler.execute

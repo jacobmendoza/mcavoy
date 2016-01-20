@@ -6,7 +6,7 @@ RSpec.describe TweetStreamProcessor do
       # Previous information existing in the db
       Tweet.create(id: 123)
 
-      tweets = [TweetBuilder.new.with_id(123), TweetBuilder.new.with_id(456)]
+      tweets = [ApiTweetBuilder.new.with_id(123), ApiTweetBuilder.new.with_id(456)]
 
       processor.process tweets
 

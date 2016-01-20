@@ -1,7 +1,7 @@
-RSpec.describe InsertTweetCommandHandler do
+RSpec.describe InsertTweetOperation do
   describe 'when processing a new tweet' do
     let(:tweet_from_api) do
-      TweetBuilder.new
+      ApiTweetBuilder.new
         .with_id(123_456)
         .with_text('text')
         .with_created_at(Time.utc(2015, 3, 22))
@@ -11,7 +11,7 @@ RSpec.describe InsertTweetCommandHandler do
         .with_retweet_count(2)
     end
 
-    let(:handler) { InsertTweetCommandHandler.new(tweet_from_api) }
+    let(:handler) { InsertTweetOperation.new(tweet_from_api) }
     let(:tweet) { Tweet.find_by_id(123_456) }
 
     before do

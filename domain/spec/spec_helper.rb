@@ -6,8 +6,9 @@ RSpec.configure do |config|
   app_config = ConfigurationLoader.new('test')
 
   # Load data builders
-  require 'builders/tweet_builder.rb'
-  require 'builders/tweet_user_builder.rb'
+  require 'builders/api_tweet_builder.rb'
+  require 'builders/api_tweet_user_builder.rb'
+  require 'builders/api_tweet_update_builder.rb'
 
   # Load application
   base_dir = File.expand_path('.', Dir.pwd)
@@ -15,6 +16,8 @@ RSpec.configure do |config|
   Dir["#{base_dir}/twitter/*.rb"].each { |file| require file }
   Dir["#{base_dir}/models/*.rb"].each { |file| require file }
   Dir["#{base_dir}/handlers/*.rb"].each { |file| require file }
+  Dir["#{base_dir}/services/*.rb"].each { |file| require file }
+  Dir["#{base_dir}/operations/*.rb"].each { |file| require file }
 
   config.before(:suite) do
     MongoMapper.setup(

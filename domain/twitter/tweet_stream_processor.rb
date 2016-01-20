@@ -4,15 +4,16 @@
 # The dependency of the handlers is now hidden. The test for this file is
 # more integration than unit. Research for pattern for the factory of handlers.
 class TweetStreamProcessor
+  def initialize(factory = TweetPersistingOperationFactory.new)
+    @factory = factory
+  end
+
   def process(tweets)
     tweets.each do |tweet|
       existing_document = Tweet.find_by_id(tweet.id)
-      if existing_document.nil?
-        command = InsertTweetCommandHandler.new(tweet)
-      else
-        command = UpdateTweetCommandHandler.new(tweet, existing_document)
-      end
-      command.execute
+      operation = @factory.get_operation(tweet, existing_document)
+      operation.execute
+      # Get percentiles for source
     end
   end
 end
