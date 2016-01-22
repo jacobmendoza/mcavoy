@@ -4,8 +4,11 @@
 # The dependency of the handlers is now hidden. The test for this file is
 # more integration than unit. Research for pattern for the factory of handlers.
 class TweetStreamProcessor
-  def initialize(factory = TweetPersistingOperationFactory.new)
+  def initialize(
+    factory = TweetPersistingOperationFactory.new,
+    percentiles_for_source = GetPercentilesForSourceService.new)
     @factory = factory
+    @percentiles_for_source = percentiles_for_source
   end
 
   def process(tweets)
@@ -14,6 +17,11 @@ class TweetStreamProcessor
       operation = @factory.get_operation(tweet, existing_document)
       operation.execute
       # Get percentiles for source
+      unless existing_document.nil?
+        percentiles = @percentiles_for_source.get(existing_document.t, existing_document.user_id)
+        existing_document.update_severity_label percentiles
+        existing_document.save
+      end
     end
   end
 end

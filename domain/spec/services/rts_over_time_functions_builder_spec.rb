@@ -8,39 +8,19 @@ RSpec.describe RtsOverTimeFunctionsBuilder do
   describe 'when building the function' do
     let(:builder) { RtsOverTimeFunctionsBuilder.new }
     it 'correctly returns the results' do
-      first_tweet =
-        ApiTweetBuilder
-        .new
-        .with_created_at(Time.utc(2015, 3, 22, 12, 00, 00))
-        .with_update(
-          ApiTweetUpdateBuilder
-          .new
-          .with_created_at(Time.utc(2015, 3, 22, 12, 01, 03))
-          .with_retweet_count(10)
-        )
-        .with_update(
-          ApiTweetUpdateBuilder
-          .new
-          .with_created_at(Time.utc(2015, 3, 22, 12, 02, 05))
-          .with_retweet_count(20)
-        )
+      first_tweet = Tweet.create(
+        created_at: Time.utc(2015, 3, 22, 12, 00, 00),
+        tweet_updates: [
+          TweetUpdate.new(created_at: Time.utc(2015, 3, 22, 12, 01, 03), retweet_count: 10),
+          TweetUpdate.new(created_at: Time.utc(2015, 3, 22, 12, 02, 05), retweet_count: 20)
+        ])
 
-      second_tweet =
-        ApiTweetBuilder
-        .new
-        .with_created_at(Time.utc(2015, 3, 22, 12, 00, 00))
-        .with_update(
-          ApiTweetUpdateBuilder
-          .new
-          .with_created_at(Time.utc(2015, 3, 22, 12, 06, 03))
-          .with_retweet_count(30)
-        )
-        .with_update(
-          ApiTweetUpdateBuilder
-          .new
-          .with_created_at(Time.utc(2015, 3, 22, 12, 8, 05))
-          .with_retweet_count(80)
-        )
+      second_tweet = Tweet.create(
+        created_at: Time.utc(2015, 3, 22, 12, 00, 00),
+        tweet_updates: [
+          TweetUpdate.new(created_at: Time.utc(2015, 3, 22, 12, 06, 03), retweet_count: 30),
+          TweetUpdate.new(created_at: Time.utc(2015, 3, 22, 12, 8, 05), retweet_count: 80)
+        ])
 
       result = builder.build_function([first_tweet, second_tweet])
 

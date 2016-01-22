@@ -8,7 +8,6 @@ RSpec.configure do |config|
   # Load data builders
   require 'builders/api_tweet_builder.rb'
   require 'builders/api_tweet_user_builder.rb'
-  require 'builders/api_tweet_update_builder.rb'
 
   # Load application
   base_dir = File.expand_path('.', Dir.pwd)
