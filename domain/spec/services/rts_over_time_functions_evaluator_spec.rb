@@ -19,5 +19,15 @@ RSpec.describe RtsOverTimeFunctionsEvaluator do
       expect(result[1]).to eq 15
       expect(result[2]).to eq 30
     end
+
+    it 'does not return nil values' do
+      fn1 = { 1 => 10, 2 => 20, 3 => 30 }
+      fn2 = { 1 => 10, 2 => nil, 3 => 30 }
+
+      result = evaluator.evaluate([fn1, fn2], 2)
+
+      expect(result.length).to eq 1
+      expect(result[0]).to eq 20
+    end
   end
 end
