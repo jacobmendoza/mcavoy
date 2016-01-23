@@ -8,18 +8,23 @@ RSpec.describe MathService do
   end
 
   describe 'when computing percentiles' do
+    it 'does not throw an error if the array only contains one element' do
+      result = service.percentile([1], 0.25)
+      expect(result).to eq 1
+    end
+
     it 'can compute percentile 25' do
-      result = service.percentile([1,2,3,4,5], 0.25)
+      result = service.percentile([1, 2, 3, 4, 5], 0.25)
       expect(result).to eq 2.0
     end
 
     it 'can compute percentile 75' do
-      result = service.percentile([1,2,3,4,5], 0.75)
+      result = service.percentile([1, 2, 3, 4, 5], 0.75)
       expect(result).to eq 4.0
     end
 
     it 'can interpolate when computing percentile' do
-      result = service.percentile([1,2,3,4,5], 0.95)
+      result = service.percentile([1, 2, 3, 4, 5], 0.95)
       expect(result).to eq 4.8
     end
   end

@@ -6,6 +6,24 @@ RSpec.describe GetPercentilesForSourceService do
     GetPercentilesForSourceService.new(builder, evaluator, math_service)
   }
 
+  describe 'When testing if percentiles can be computed' do
+    it 'returns false if the operation cannot be done' do
+      user_id = 1
+      (1..(MINIMUM_RECORDS_TO_ALLOW_PERCENTILES - 1)).each do |i|
+        Tweet.create(user_id: user_id)
+      end
+      expect(service.can_be_computed(user_id)).to eq false
+    end
+
+    it 'returns true if the operation can be done' do
+      user_id = 1
+      (1..(MINIMUM_RECORDS_TO_ALLOW_PERCENTILES)).each do |i|
+        Tweet.create(user_id: user_id)
+      end
+      expect(service.can_be_computed(user_id)).to eq true
+    end
+  end
+
   describe 'When getting the percentiles for a source' do
     it 'returns the results' do
       t = 2

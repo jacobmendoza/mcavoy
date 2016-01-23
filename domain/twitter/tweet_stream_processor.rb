@@ -17,8 +17,13 @@ class TweetStreamProcessor
       operation = @factory.get_operation(tweet, existing_document)
       operation.execute
       # Get percentiles for source
-      unless existing_document.nil?
-        percentiles = @percentiles_for_source.get(existing_document.t, existing_document.user_id)
+      compute_percentiles =
+        !existing_document.nil? &&
+        @percentiles_for_source.can_be_computed(existing_document.user_id)
+
+      if compute_percentiles
+        percentiles = @percentiles_for_source.get(
+          existing_document.t, existing_document.user_id)
         existing_document.update_severity_label percentiles
         existing_document.save
       end

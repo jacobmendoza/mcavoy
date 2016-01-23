@@ -20,7 +20,8 @@ RSpec.describe TweetStreamProcessor do
     }
 
     it 'inserts and updates records' do
-      expect(percentiles).to receive(:get).with(1, 1234) {
+      allow(percentiles).to receive(:can_be_computed).with(1234) { true }
+      allow(percentiles).to receive(:get).with(1, 1234) {
         { YELLOW: 100, ORANGE: 200, RED: 300 }
       }
 
@@ -35,6 +36,7 @@ RSpec.describe TweetStreamProcessor do
       allow(factory).to receive(:get_operation).with(api_tweet1, stored_tweet) { operation_double }
       allow(factory).to receive(:get_operation).with(api_tweet2, nil) { operation_double }
       allow(operation_double).to receive(:execute)
+      allow(percentiles).to receive(:can_be_computed).with(1234) { true }
 
       expect(percentiles).to receive(:get).with(1, 1234) {
         { YELLOW: 100, ORANGE: 200, RED: 300 }
@@ -49,6 +51,17 @@ RSpec.describe TweetStreamProcessor do
       label = updated_tweet.tweet_severity_labels.first
 
       expect(label).to_not be_nil
+    end
+
+    it 'does not insert a new severity label into the tweet if it cannot be computed' do
+      allow(factory).to receive(:get_operation).with(api_tweet1, stored_tweet) { operation_double }
+      allow(factory).to receive(:get_operation).with(api_tweet2, nil) { operation_double }
+      allow(operation_double).to receive(:execute)
+
+      expect(percentiles).to receive(:can_be_computed).with(1234) { false }
+      expect(percentiles).to_not receive(:get).with(1, 1234)
+
+      processor.process tweets
     end
   end
 end
