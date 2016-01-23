@@ -1,8 +1,8 @@
 RSpec.describe TweetStreamProcessor do
   describe 'when processing an stream of tweets' do
     let(:factory) { double }
-    let(:percentiles) { double }
-    let(:processor) { TweetStreamProcessor.new(factory, percentiles) }
+    let(:severity_levels_for_source) { double }
+    let(:processor) { TweetStreamProcessor.new(factory, severity_levels_for_source) }
     let(:api_tweet1) { ApiTweetBuilder.new.with_id(123) }
     let(:api_tweet2) { ApiTweetBuilder.new.with_id(456) }
     let(:tweets) { [api_tweet1, api_tweet2] }
@@ -20,8 +20,8 @@ RSpec.describe TweetStreamProcessor do
     }
 
     it 'inserts and updates records' do
-      allow(percentiles).to receive(:can_be_computed).with(1234) { true }
-      allow(percentiles).to receive(:get).with(1, 1234) {
+      allow(severity_levels_for_source).to receive(:can_be_computed).with(1234) { true }
+      allow(severity_levels_for_source).to receive(:get).with(1, 1234) {
         { YELLOW: 100, ORANGE: 200, RED: 300 }
       }
 
@@ -36,9 +36,9 @@ RSpec.describe TweetStreamProcessor do
       allow(factory).to receive(:get_operation).with(api_tweet1, stored_tweet) { operation_double }
       allow(factory).to receive(:get_operation).with(api_tweet2, nil) { operation_double }
       allow(operation_double).to receive(:execute)
-      allow(percentiles).to receive(:can_be_computed).with(1234) { true }
+      allow(severity_levels_for_source).to receive(:can_be_computed).with(1234) { true }
 
-      expect(percentiles).to receive(:get).with(1, 1234) {
+      expect(severity_levels_for_source).to receive(:get).with(1, 1234) {
         { YELLOW: 100, ORANGE: 200, RED: 300 }
       }
 
@@ -58,8 +58,8 @@ RSpec.describe TweetStreamProcessor do
       allow(factory).to receive(:get_operation).with(api_tweet2, nil) { operation_double }
       allow(operation_double).to receive(:execute)
 
-      expect(percentiles).to receive(:can_be_computed).with(1234) { false }
-      expect(percentiles).to_not receive(:get).with(1, 1234)
+      expect(severity_levels_for_source).to receive(:can_be_computed).with(1234) { false }
+      expect(severity_levels_for_source).to_not receive(:get).with(1, 1234)
 
       processor.process tweets
     end

@@ -6,9 +6,9 @@
 class TweetStreamProcessor
   def initialize(
     factory = TweetPersistingOperationFactory.new,
-    percentiles_for_source = GetPercentilesForSourceService.new)
+    severity_levels_for_source = SeverityLevelsForSourceRetriever.new)
     @factory = factory
-    @percentiles_for_source = percentiles_for_source
+    @severity_levels_for_source = severity_levels_for_source
   end
 
   def process(tweets)
@@ -16,17 +16,20 @@ class TweetStreamProcessor
       existing_document = Tweet.find_by_id(tweet.id)
       operation = @factory.get_operation(tweet, existing_document)
       operation.execute
-      # Get percentiles for source
-      compute_percentiles =
-        !existing_document.nil? &&
-        @percentiles_for_source.can_be_computed(existing_document.user_id)
-
-      if compute_percentiles
-        percentiles = @percentiles_for_source.get(
-          existing_document.t, existing_document.user_id)
-        existing_document.update_severity_label percentiles
-        existing_document.save
-      end
+      compute_severity_for_source(existing_document)
     end
+  end
+
+  def should_compute_severity_for_source(user_id)
+    @severity_levels_for_source.can_be_computed(user_id)
+  end
+
+  def compute_severity_for_source(existing_document)
+    return if existing_document.nil?
+    return unless should_compute_severity_for_source(existing_document.user_id)
+    levels = @severity_levels_for_source.get(
+      existing_document.t, existing_document.user_id)
+    existing_document.update_severity_label levels
+    existing_document.save
   end
 end
