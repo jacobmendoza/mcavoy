@@ -12,24 +12,20 @@ class TweetStreamProcessor
   end
 
   def process(tweets)
-    tweets.each do |tweet|
-      existing_document = Tweet.find_by_id(tweet.id)
-      operation = @factory.get_operation(tweet, existing_document)
+    tweets.each do |api_tweet|
+      tweet = Tweet.find_by_id(api_tweet.id)
+      operation = @factory.get_operation(api_tweet, tweet)
       operation.execute
-      compute_severity_for_source(existing_document)
+      compute_severity_for_source(tweet)
     end
   end
 
-  def should_compute_severity_for_source(user_id)
-    @severity_levels_for_source.can_be_computed(user_id)
-  end
+  def compute_severity_for_source(tweet)
+    return if tweet.nil?
+    return unless @severity_levels_for_source.can_be_computed(tweet.user_id)
 
-  def compute_severity_for_source(existing_document)
-    return if existing_document.nil?
-    return unless should_compute_severity_for_source(existing_document.user_id)
-    levels = @severity_levels_for_source.get(
-      existing_document.t, existing_document.user_id)
-    existing_document.update_severity_label levels
-    existing_document.save
+    levels = @severity_levels_for_source.get(tweet.t, tweet.user_id)
+    tweet.patch_severity_on_last_version levels
+    tweet.save
   end
 end

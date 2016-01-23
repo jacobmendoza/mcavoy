@@ -3,7 +3,6 @@ class Tweet
   include MongoMapper::Document
 
   many :tweet_updates
-  many :tweet_severity_labels
 
   key :twitter_id, Integer
   key :created_at, Time
@@ -19,13 +18,24 @@ class Tweet
     ((last_version.created_at - created_at) / SYSTEM_POLL_INTERVAL).round
   end
 
-  def update_severity_label(percentiles)
-    tweet_severity_labels << get_label('DEFAULT')
-  end
+  def patch_severity_on_last_version(severity_levels)
+    retweet_count = last_version.retweet_count
 
-  private
+    if retweet_count >= severity_levels[YELLOW] && retweet_count < severity_levels[ORANGE]
+      last_version.severity_label = 'YELLOW'
+      return
+    end
 
-  def get_label(name)
-    TweetSeverityLabel.new(created_at: Time.now, label: name)
+    if retweet_count >= severity_levels[ORANGE] && retweet_count < severity_levels[RED]
+      last_version.severity_label = 'ORANGE'
+      return
+    end
+
+    if retweet_count >= severity_levels[RED]
+      last_version.severity_label = 'RED'
+      return
+    end
+
+    last_version.severity_label = 'DEFAULT'
   end
 end

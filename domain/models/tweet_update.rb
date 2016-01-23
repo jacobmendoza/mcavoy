@@ -5,4 +5,5 @@ class TweetUpdate
   key :created_at, Time
   key :retweet_count, Integer
   key :favorite_count, Integer
+  key :severity_label, String
 end

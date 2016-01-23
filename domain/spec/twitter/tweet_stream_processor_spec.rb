@@ -9,20 +9,18 @@ RSpec.describe TweetStreamProcessor do
     let(:operation_double) { double }
     let(:stored_tweet) {
       Tweet.create(
-        id: 123, created_at: Time.utc(2015, 3, 22, 12, 02, 05),
+        id: 123,
+        created_at: Time.utc(2015, 3, 22, 12, 02, 05),
         user_id: 1234, tweet_updates:
         [
           TweetUpdate.new(retweet_count: 10, created_at: Time.utc(2015, 3, 22, 12, 03, 32))
-        ], tweet_severity_labels:
-        [
-          TweetSeverityLabel.new(created_at: Time.now, label: 'default')
         ])
     }
 
     it 'inserts and updates records' do
       allow(severity_levels_for_source).to receive(:can_be_computed).with(1234) { true }
       allow(severity_levels_for_source).to receive(:get).with(1, 1234) {
-        { YELLOW: 100, ORANGE: 200, RED: 300 }
+        { YELLOW => 100, ORANGE => 200, RED => 300 }
       }
 
       expect(factory).to receive(:get_operation).with(api_tweet1, stored_tweet) { operation_double }
@@ -39,18 +37,14 @@ RSpec.describe TweetStreamProcessor do
       allow(severity_levels_for_source).to receive(:can_be_computed).with(1234) { true }
 
       expect(severity_levels_for_source).to receive(:get).with(1, 1234) {
-        { YELLOW: 100, ORANGE: 200, RED: 300 }
+        { YELLOW => 100, ORANGE => 200, RED => 300 }
       }
 
       processor.process tweets
 
       updated_tweet = Tweet.find_by_id(123)
 
-      expect(updated_tweet.tweet_severity_labels.count).to eq 2
-
-      label = updated_tweet.tweet_severity_labels.first
-
-      expect(label).to_not be_nil
+      expect(updated_tweet.last_version.severity_label).to eq 'DEFAULT'
     end
 
     it 'does not insert a new severity label into the tweet if it cannot be computed' do
