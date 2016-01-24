@@ -23,6 +23,7 @@ class InsertTweetOperation
     TweetUpdate.new(
       created_at: Time.new,
       retweet_count: @tweet.retweet_count,
-      favorite_count: @tweet.favorite_count)
+      favorite_count: @tweet.favorite_count,
+      severity_label: 'DEFAULT')
   end
 end

@@ -38,6 +38,7 @@ RSpec.describe InsertTweetOperation do
     it 'maps the fields correctly for the update' do
       expect(tweet.tweet_updates.first.favorite_count).to eq 1
       expect(tweet.tweet_updates.first.retweet_count).to eq 2
+      expect(tweet.tweet_updates.first.severity_label).to eq 'DEFAULT'
     end
   end
 end

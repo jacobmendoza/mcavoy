@@ -44,8 +44,9 @@ RSpec.describe UpdateTweetOperation do
     end
 
     it 'maps correctly the new values for the update' do
-      expect(stored_tweet.tweet_updates.first.retweet_count).to eq 150
-      expect(stored_tweet.tweet_updates.first.favorite_count).to eq 300
+      expect(stored_tweet.tweet_updates.last.retweet_count).to eq 2
+      expect(stored_tweet.tweet_updates.last.favorite_count).to eq 1
+      expect(stored_tweet.tweet_updates.last.severity_label).to eq 'DEFAULT'
     end
   end
 end
