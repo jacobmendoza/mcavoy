@@ -18,6 +18,18 @@ class Tweet
     ((last_version.created_at - created_at) / SYSTEM_POLL_INTERVAL).round
   end
 
+  def delta_rt
+    if tweet_updates.length > 1
+      sorted_tweets = tweet_updates.reverse
+      last = sorted_tweets[0]
+      prev = sorted_tweets[1]
+      prev_rt_count = prev.retweet_count == 0 ? 1 : prev.retweet_count
+      (((last.retweet_count.to_f / prev_rt_count) - 1) * 100).round(2)
+    else
+      0
+    end
+  end
+
   def patch_severity_on_last_version(severity_levels)
     retweet_count = last_version.retweet_count
 
