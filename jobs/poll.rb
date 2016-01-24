@@ -1,23 +1,11 @@
 require 'mongo_mapper'
 require 'rufus-scheduler'
+require_relative '../domain/application_bootstrapper'
 
 def bootstrap
-  base_dir = File.expand_path('..', Dir.pwd)
-  Dir["#{base_dir}/domain/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/domain/twitter/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/domain/models/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/domain/handlers/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/domain/services/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/domain/operations/*.rb"].each { |file| require file }
-
-  database_uri = ConfigurationLoader.new.database_uri
-
-  puts "Using #{database_uri}"
-
-  MongoMapper.setup(
-    {
-      'production' => { 'uri' =>  database_uri }
-    }, 'production')
+  base_dir = "#{File.expand_path('..', Dir.pwd)}/domain"
+  app = ApplicationBootstrapper.new(base_dir, 'development')
+  app.setup_database
 end
 
 def sync_timeline

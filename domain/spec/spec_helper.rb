@@ -1,28 +1,18 @@
 require 'mongo_mapper'
 require 'twitter'
-require_relative '../configuration_loader'
+require_relative '../application_bootstrapper'
 
 RSpec.configure do |config|
-  app_config = ConfigurationLoader.new('test')
-
   # Load data builders
   require 'builders/api_tweet_builder.rb'
   require 'builders/api_tweet_user_builder.rb'
 
   # Load application
   base_dir = File.expand_path('.', Dir.pwd)
-  Dir["#{base_dir}/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/twitter/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/models/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/handlers/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/services/*.rb"].each { |file| require file }
-  Dir["#{base_dir}/operations/*.rb"].each { |file| require file }
+  app = ApplicationBootstrapper.new(base_dir, 'test')
 
   config.before(:suite) do
-    MongoMapper.setup(
-      {
-        'production' => { 'uri' => app_config.database_uri }
-      }, 'production')
+    app.setup_database
   end
 
   config.after(:each) do
@@ -30,8 +20,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    db = MongoMapper.database
-    db.command(dropDatabase: 1)
+    app.drop_database
   end
 
   config.expect_with :rspec do |expectations|
