@@ -4,9 +4,12 @@
   border-bottom: 1px solid #F2F2F2;
   padding-bottom: 20px;
 
-  .left-column {
-    border-left: 3px solid #FACC2E;
+  .default { border-left: 3px solid #CCC }
+  .yellow { border-left: 3px solid #FACC2E; }
+  .orange { border-left: 3px solid #FF8000; }
+  .red { border-left: 3px solid #FE2E2E; }
 
+  .left-column {
     .metrics-container {
       width: 100%;
       text-align: center;

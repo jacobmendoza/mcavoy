@@ -1,20 +1,29 @@
-<div class="row tweet-row">
-  <div class="col-md-2 left-column">
-    <div class="metrics-container">
-      <div>394</div>
-      <div class="delta-container">
-        <div class="arrow"></div>
-        <div class="number">34.5%</div>
+<span ng-repeat="report in model">
+  <div class="row tweet-row">
+    <div class="col-md-2 left-column {{report.severity_label.toLowerCase()}}">
+      <div class="metrics-container">
+        <div>{{report.retweet_count}}</div>
+        <div class="delta-container">
+          <div class="arrow"></div>
+          <div class="number">34.5%</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-10 right-column">
-    <div class="source-container">2015-12-26T17:42:57.511Z - <b>The Associated Press</b></div>
-    <div class="title">'Plane wreckage' found in Thailand fuels talk of missing Malaysian jet</div>
-    <div class="links-container">
-      <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
-      <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
-      <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
+    <div class="col-md-10 right-column">
+      <div class="source-container">{{report.created_at}} - {{report.user_name}}</div>
+      <div class="title">{{report.text}}</div>
+      <!-- <div class="links-container">
+        <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
+        <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
+        <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
+      </div> -->
     </div>
+  </div>
+</span>
+<div ng-show="isLoading" style="width: 80px; height: 80px; position: absolute; margin:auto; left:0; right:0; top:0; bottom:0;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
   </div>
 </div>
