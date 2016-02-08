@@ -5,11 +5,11 @@
 class RtsOverTimeFunctionsBuilder
   def build_function(tweets)
     functions = []
-    tweets.each do |t|
+    tweets.each do |tweet|
       fn_points = {}
-      t.tweet_updates.each do |u|
-        x = ((u.created_at - t.created_at) / SYSTEM_POLL_INTERVAL).round
-        fn_points[x] = u.retweet_count
+      tweet.tweet_updates.each do |update|
+        x = tweet.elapsed_time(update)
+        fn_points[x] = update.retweet_count
       end
       functions << fn_points
     end

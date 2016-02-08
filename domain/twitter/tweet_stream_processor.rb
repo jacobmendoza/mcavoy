@@ -24,7 +24,7 @@ class TweetStreamProcessor
     return if tweet.nil?
     return unless @severity_levels_for_source.can_be_computed(tweet.user_id)
 
-    levels = @severity_levels_for_source.get(tweet.t, tweet.user_id)
+    levels = @severity_levels_for_source.get(tweet.elapsed_time, tweet.user_id)
     tweet.patch_severity_on_last_version levels
     tweet.save
   end

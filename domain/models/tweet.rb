@@ -6,6 +6,7 @@ class Tweet
 
   key :twitter_id, Integer
   key :created_at, Time
+  key :source_created_at, Time
   key :text, String
   key :user_id, Integer
   key :user_name, String
@@ -14,8 +15,8 @@ class Tweet
     tweet_updates.reverse.first
   end
 
-  def t
-    ((last_version.created_at - created_at) / SYSTEM_POLL_INTERVAL).round
+  def elapsed_time(from_version = last_version)
+    ((from_version.created_at - created_at) / SYSTEM_POLL_INTERVAL).round
   end
 
   def delta_rt
