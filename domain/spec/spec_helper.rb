@@ -17,6 +17,7 @@ RSpec.configure do |config|
 
   config.after(:each) do
     Tweet.destroy_all
+    Source.destroy_all
   end
 
   config.after(:suite) do

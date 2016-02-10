@@ -3,6 +3,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@import "source-modal.scss";
 @import "news-container.scss";
 
 .browsehappy {
@@ -79,3 +80,5 @@ body {
     border-bottom: 0;
   }
 }
+
+.source-link { cursor: pointer; cursor: hand; }

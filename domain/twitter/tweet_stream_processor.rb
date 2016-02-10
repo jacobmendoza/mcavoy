@@ -6,16 +6,19 @@
 class TweetStreamProcessor
   def initialize(
     factory = TweetPersistingOperationFactory.new,
+    source_updater = SourceUpdater.new,
     severity_levels_for_source = SeverityLevelsForSourceRetriever.new)
     @factory = factory
+    @source_updater = source_updater
     @severity_levels_for_source = severity_levels_for_source
   end
 
   def process(tweets)
     tweets.each do |api_tweet|
+      @source_updater.upsert(api_tweet.user)
       tweet = Tweet.find_by_id(api_tweet.id)
-      operation = @factory.get_operation(api_tweet, tweet)
-      operation.execute
+      operation_over_tweet = @factory.get_operation(api_tweet, tweet)
+      operation_over_tweet.execute
       compute_severity_for_source(tweet)
     end
   end

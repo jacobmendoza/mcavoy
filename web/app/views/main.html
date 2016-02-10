@@ -10,7 +10,8 @@
       </div>
     </div>
     <div class="col-md-10 right-column">
-      <div class="source-container">{{report.created_at}} - {{report.user_name}}</div>
+      <ng-include src="'views/source-modal-content.html'"></ng-include>
+      <div class="source-container">{{report.created_at}} - <span class="source-link" ng-click="openSourceModal({{report.user_id}})">{{report.user_name}}</span></div>
       <div class="title">{{report.text}}</div>
       <!-- <div class="links-container">
         <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>

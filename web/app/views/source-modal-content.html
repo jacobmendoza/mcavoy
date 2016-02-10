@@ -1,0 +1,23 @@
+<script type="text/ng-template" id="source-modal-content.html">
+  <div id="source-modal-popup">
+    <div class="modal-header">
+    <div class="row">
+      <div class="col-md-1">
+        <img class="source-logo" src='{{model.profile_image_url}}'/>
+      </div>
+      <div class="col-md-11">
+        <div id="source-information">
+          <h3 class="modal-title">{{model.name}}</h3>
+          <div>{{model.description}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+        <div>Stored tweets: <span class="metric">{{model.count}}</span></div>
+        <div>Average Retweets: <span class="metric">{{model.average_retweets}}</span></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    </div>
+  </div>
+</script>

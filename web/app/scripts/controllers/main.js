@@ -8,11 +8,26 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-  .controller('MainCtrl', function ($scope, $http, $interval) {
+  .controller('MainCtrl', function ($scope, $http, $interval, $uibModal) {
     var self = this;
+
     this.initialize = function() {
       self.reload();
       $interval(self.reload, 30000);
+    };
+
+    $scope.openSourceModal = function(user_id) {
+      $uibModal.open({
+         animation: true,
+         templateUrl: 'source-modal-content.html',
+         controller: 'SourceInformationModalCtrl',
+         size: 'small',
+         resolve: {
+           source_id: function () {
+             return user_id;
+           }
+         }
+       });
     };
 
     this.reload = function() {

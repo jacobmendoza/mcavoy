@@ -25,8 +25,28 @@ end
 
 get '/latest' do
   tweets = Tweet.sort(:created_at.desc).limit(150)
-
   models = tweets.map { |t| TweetApiModel.new(t) }
-
   json models
+end
+
+get '/source/:source_id' do |source_id|
+  halt 400, 'the source_id provided must be a number' unless source_id =~ /\d+/
+  id = source_id.to_i
+  source = Source.find_by_id(id)
+  tweets = Tweet.find_all_by_user_id(id)
+  latest_versions_rts = tweets.map { |t| t.last_version.retweet_count }
+  retweets_sum = latest_versions_rts.reduce(:+)
+
+  result = {
+    name: source.name,
+    screen_name: source.screen_name,
+    location: source.location,
+    description: source.description,
+    profile_background_image_url: source.profile_background_image_url,
+    profile_image_url: source.profile_image_url,
+    count: tweets.count,
+    average_retweets: (retweets_sum / tweets.count.to_f).round(2)
+  }
+
+  json result
 end
