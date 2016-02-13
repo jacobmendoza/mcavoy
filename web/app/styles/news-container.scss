@@ -5,9 +5,9 @@
   padding-bottom: 20px;
 
   .default { border-left: 3px solid #CCC }
-  .yellow { border-left: 3px solid #FACC2E; }
-  .orange { border-left: 3px solid #FF8000; }
-  .red { border-left: 3px solid #FE2E2E; }
+  .yellow { border-left: 3px solid $yellow-color; }
+  .orange { border-left: 3px solid $orange-color; }
+  .red { border-left: 3px solid $red-color; }
 
   .left-column {
     .metrics-container {

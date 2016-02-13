@@ -1,7 +1,9 @@
 require 'sinatra'
 require 'sinatra/json'
 require_relative '../domain/application_bootstrapper'
-require_relative './models/tweet_api_model'
+require_relative './models/news_report_summary_model'
+require_relative './models/news_report_detailed_model'
+require_relative './models/news_report_source_detail_model'
 
 set :port, 9494
 set :protection, except: :http_origin
@@ -25,15 +27,16 @@ end
 
 get '/latest' do
   tweets = Tweet.sort(:created_at.desc).limit(150)
-  models = tweets.map { |t| TweetApiModel.new(t) }
+  models = tweets.map { |t| NewsReportSummaryModel.new(t) }
   json models
 end
 
 get '/news_report/:id' do |id|
   halt 400, 'the id provided must be a number' unless id =~ /\d+/
   tweet = Tweet.find_by_id(id.to_i)
+  source = Source.find_by_id(tweet.user_id)
   halt 404, "cannot find news report with id #{id}" if tweet.nil?
-  json tweet
+  json NewsReportDetailedModel.new(tweet, source)
 end
 
 get '/source/:source_id' do |source_id|

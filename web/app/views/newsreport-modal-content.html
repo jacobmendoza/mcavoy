@@ -1,14 +1,44 @@
 <script type="text/ng-template" id="newsreport-modal-content.html">
   <div id="newsreport-modal-popup">
     <div class="modal-header">
-    <div class="source-container">{{model.created_at}} - {{model.user_name}}</div>
-      <h2>{{model.text}}</h2>
+      <div class="row">
+        <div class="col-md-1"><img src='{{model.source.profile_image_url}}' alt='{{model.source.name}}' /></div>
+        <div class="col-md-11">
+          <div class="source-container">{{model.created_at}} - {{model.user_name}}</div>
+          <h2>{{model.text}}</h2>
+        </div>
+      </div>
     </div>
     <div class="modal-body">
-        <canvas id="line" class="chart chart-line" chart-data="data" width="800"
+        <canvas id="line" class="chart chart-line" chart-data="chartData" width="800"
           chart-labels="labels" chart-series="series"
           chart-click="onClick" >
         </canvas>
+        <div id="severity-levels">
+          <div>
+            <div class="level-description">
+              The last update from the news report indicates a severity of <span class="level-{{model.lastSeverityLabel.toLowerCase()}}">{{model.lastSeverityLabel}}</span>
+            </div>
+            <div class="level-description">
+              Severity levels for a news report from {{model.source.name}} <span>{{model.elapsed_time}}</span> minutes after creation
+            </div>
+            <div>
+              <div class="level">
+                <div class="level-title">YELLOW</div>
+                <div class="level-value">[{{model.yellowStart}}-{{model.orangeStart}}] RTs</div>
+              </div>
+              <div class="level">
+                <div class="level-title">ORANGE</div>
+                <div class="level-value">[{{model.orangeStart}}-{{model.redStart}}] RTs</div>
+              </div>
+              <div class="level">
+                <div class="level-title">RED</div>
+                <div class="level-value">&gt;{{model.redStart}} RTs</div>
+              </div>
+              <div style="clear:both"></div>
+            </div>
+          </div>
+        </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>

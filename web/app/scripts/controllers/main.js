@@ -23,7 +23,7 @@ angular.module('webApp')
          controller: 'SourceInformationModalCtrl',
          size: '',
          resolve: {
-           source_id: function () {
+           sourceId: function () {
              return user_id;
            }
          }
@@ -37,7 +37,7 @@ angular.module('webApp')
          controller: 'NewsReportModalCtrl',
          size: 'lg',
          resolve: {
-           news_report_id: function () {
+           newsReportId: function () {
              return id;
            }
          }

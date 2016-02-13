@@ -1,5 +1,5 @@
-# Represents a tweet that will be returned from the API
-class TweetApiModel
+# Represents a model of a news report
+class NewsReportSummaryModel
   attr_accessor :id, :id_str, :created_at, :source_created_at, :user_id,
                 :user_name, :retweet_count, :favorite_count, :severity_label
 
@@ -12,6 +12,7 @@ class TweetApiModel
     @user_name = tweet.user_name
     @text = tweet.text
     @delta_rt = tweet.delta_rt
+    @elapsed_time = tweet.elapsed_time
 
     last_version = tweet.last_version
 
