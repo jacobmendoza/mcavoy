@@ -8,6 +8,7 @@ class InsertTweetOperation
   def execute
     Tweet.create(
       id: @tweet.id,
+      id_str: @tweet.id.to_s,
       created_at: Time.new,
       source_created_at: @tweet.created_at,
       text: @tweet.text,

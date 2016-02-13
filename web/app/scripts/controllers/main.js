@@ -21,10 +21,24 @@ angular.module('webApp')
          animation: true,
          templateUrl: 'source-modal-content.html',
          controller: 'SourceInformationModalCtrl',
-         size: 'small',
+         size: '',
          resolve: {
            source_id: function () {
              return user_id;
+           }
+         }
+       });
+    };
+
+    $scope.openNewsReportModal = function(id) {
+      $uibModal.open({
+         animation: true,
+         templateUrl: 'newsreport-modal-content.html',
+         controller: 'NewsReportModalCtrl',
+         size: 'lg',
+         resolve: {
+           news_report_id: function () {
+             return id;
            }
          }
        });

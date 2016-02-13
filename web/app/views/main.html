@@ -11,8 +11,9 @@
     </div>
     <div class="col-md-10 right-column">
       <ng-include src="'views/source-modal-content.html'"></ng-include>
+      <ng-include src="'views/newsreport-modal-content.html'"></ng-include>
       <div class="source-container">{{report.created_at}} - <span class="source-link" ng-click="openSourceModal({{report.user_id}})">{{report.user_name}}</span></div>
-      <div class="title">{{report.text}}</div>
+      <div class="title" ng-click="openNewsReportModal('{{report.id_str}}')">{{report.text}}</div>
       <!-- <div class="links-container">
         <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>
         <div><a href="https://t.co/LZx6du3YgM">https://t.co/LZx6du3YgM</a></div>

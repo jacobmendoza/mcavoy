@@ -29,6 +29,13 @@ get '/latest' do
   json models
 end
 
+get '/news_report/:id' do |id|
+  halt 400, 'the id provided must be a number' unless id =~ /\d+/
+  tweet = Tweet.find_by_id(id.to_i)
+  halt 404, "cannot find news report with id #{id}" if tweet.nil?
+  json tweet
+end
+
 get '/source/:source_id' do |source_id|
   halt 400, 'the source_id provided must be a number' unless source_id =~ /\d+/
   id = source_id.to_i

@@ -24,6 +24,7 @@ RSpec.describe InsertTweetOperation do
 
     it 'maps the fields correctly for the tweet' do
       expect(tweet.id).to eq 123_456
+      expect(tweet.id_str).to eq '123456'
       expect(tweet.created_at).to_not be_nil
       expect(tweet.source_created_at).to eq Time.utc(2015, 3, 22)
       expect(tweet.text).to eq 'text'

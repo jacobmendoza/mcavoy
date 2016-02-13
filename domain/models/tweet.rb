@@ -4,6 +4,7 @@ class Tweet
 
   many :tweet_updates
 
+  key :id_str, String
   key :twitter_id, Integer
   key :created_at, Time
   key :source_created_at, Time

@@ -16,9 +16,17 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'chart.js'
   ])
-  .config(function ($routeProvider) {
+  .config(function (ChartJsProvider, $routeProvider) {
+    ChartJsProvider.setOptions({
+      responsive: false
+    });
+    ChartJsProvider.setOptions('Line', {
+      datasetFill: false
+    });
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',

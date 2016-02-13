@@ -2,6 +2,21 @@
   border-radius: 0 !important;
 }
 
+#newsreport-modal-popup {
+  padding: 20px;
+  h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .source-container {
+    font-size:12px;
+    text-transform: uppercase;
+    color:#999;
+    display: inline-block;
+  }
+}
+
 #source-modal-popup {
   .modal-header {
     background-size: cover;
