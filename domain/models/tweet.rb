@@ -1,3 +1,4 @@
+require 'json'
 # Class representing a tweet
 class Tweet
   include MongoMapper::Document
@@ -36,20 +37,27 @@ class Tweet
     retweet_count = last_version.retweet_count
 
     if retweet_count >= severity_levels[YELLOW] && retweet_count < severity_levels[ORANGE]
-      last_version.severity_label = 'YELLOW'
+      assign_new_severity 'YELLOW', severity_levels
       return
     end
 
     if retweet_count >= severity_levels[ORANGE] && retweet_count < severity_levels[RED]
-      last_version.severity_label = 'ORANGE'
+      assign_new_severity 'ORANGE', severity_levels
       return
     end
 
     if retweet_count >= severity_levels[RED]
-      last_version.severity_label = 'RED'
+      assign_new_severity 'RED', severity_levels
       return
     end
 
-    last_version.severity_label = 'DEFAULT'
+    assign_new_severity 'DEFAULT', severity_levels
+  end
+
+  private
+
+  def assign_new_severity(label, severity_levels_used)
+    last_version.severity_label = label
+    last_version.severity_levels = (JSON.dump severity_levels_used).to_s
   end
 end
