@@ -1,7 +1,13 @@
 require 'timecop'
 RSpec.describe SimpleMemoryCache do
-  describe 'when inserting a new pair without expiration' do
-    let(:sut) { SimpleMemoryCache.new }
+  describe 'when inserting a new pair' do
+    let(:sut) { SimpleMemoryCache.instance }
+    let(:default_expiration) { 5 * 60 }
+
+    before do
+      sut.clear_cache
+      sut.default_expiration = default_expiration
+    end
 
     it 'raises an exception if the block has not been provided' do
       expect { sut.add('key') }.to raise_error ScriptError
@@ -24,7 +30,7 @@ RSpec.describe SimpleMemoryCache do
     it 'executes the block again if the key has expired with default time' do
       now = Time.now
       sut.add('key') { ['cached_value'] }
-      Timecop.travel(now + 5 * 60) do
+      Timecop.travel(now + default_expiration) do
         value = sut.add('key') { ['new_value'] }
         expect(value).to eq ['new_value']
       end
