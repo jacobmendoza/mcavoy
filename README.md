@@ -11,7 +11,7 @@ McAvoy tracks the news reports emitted by media companies, storing and analysing
 4. (*Future*) Detect personal names and locations from the text of the news reports using NLP. 
 
 ## How does it work?
-A Twiter list of selected media companies is constantly analysed. 
+A Twitter list of selected media companies is constantly analysed. 
 A model of the tweet that contains the news report is tracked, and its values (retweets and favorites count) 
 are stored in a MongoDB database periodically. Every media source, depending on the amount of followers, generate different
 impact patterns.
