@@ -13,7 +13,7 @@ angular.module('webApp')
 
     this.initialize = function() {
       $scope.isLoading = true;
-      var url = "http://127.0.0.1:9494/source/" + sourceId;
+      var url = 'http://127.0.0.1:9494/source/' + sourceId;
       $http.get(url).success(function(result) {
         $scope.model = result;
       }).error(function() {

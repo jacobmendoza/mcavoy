@@ -46,7 +46,7 @@ angular.module('webApp')
 
     this.reload = function() {
       $scope.isLoading = true;
-      $http.get("http://127.0.0.1:9494/latest").success(function(result) {
+      $http.get('http://127.0.0.1:9494/latest').success(function(result) {
         $scope.model = result;
         $scope.isLoading = false;
       }).error(function() {

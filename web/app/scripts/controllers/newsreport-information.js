@@ -12,7 +12,7 @@ angular.module('webApp')
     var self = this;
 
     this.initialize = function() {
-      var url = "http://127.0.0.1:9494/news_report/" + newsReportId;
+      var url = 'http://127.0.0.1:9494/news_report/' + newsReportId;
 
       $http.get(url).success(function(result) {
         $scope.model = result;
