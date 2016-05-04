@@ -8,13 +8,11 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-  .controller('NewsReportModalCtrl', function ($scope, $uibModalInstance, $http, newsReportId) {
+  .controller('NewsReportModalCtrl', function ($scope, $uibModalInstance, newsReportId, apiGateway) {
     var self = this;
 
     this.initialize = function() {
-      var url = 'http://127.0.0.1:9494/news_report/' + newsReportId;
-
-      $http.get(url).success(function(result) {
+      apiGateway.getNewsReportById(newsReportId).success(function(result) {
         $scope.model = result;
         var lastUpdate = result.tweet_updates[result.tweet_updates.length - 1];
 
