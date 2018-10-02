@@ -14,7 +14,8 @@
                  [bidi "2.1.3"]
 
                  ; only required if you want to use this for tests
-                 [fulcrologic/fulcro-spec "2.1.0-1" :scope "test" :exclusions [fulcrologic/fulcro]]]
+                 [fulcrologic/fulcro-spec "2.1.0-1" :scope "test" :exclusions [fulcrologic/fulcro]]
+                 [fulcrologic/fulcro-inspect "2.2.3"]]
 
   :uberjar-name "mcavoy.jar"
 
@@ -64,7 +65,8 @@
                                                           :optimizations        :none
                                                           :output-dir           "resources/public/js/dev"
                                                           :output-to            "resources/public/js/mcavoy.js"
-                                                          :preloads             [devtools.preload fulcro.inspect.preload]
+                                                          :preloads             [devtools.preload
+                                                                                 fulcro.inspect.preload]
                                                           :source-map-timestamp true}}
                                           {:id           "i18n" ;for gettext string extraction
                                            :source-paths ["src/main"]
