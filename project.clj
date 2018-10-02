@@ -15,7 +15,8 @@
 
                  ; only required if you want to use this for tests
                  [fulcrologic/fulcro-spec "2.1.0-1" :scope "test" :exclusions [fulcrologic/fulcro]]
-                 [fulcrologic/fulcro-inspect "2.2.3"]]
+                 [fulcrologic/fulcro-inspect "2.2.3"]
+                 [com.taoensso/timbre "4.10.0"]]
 
   :uberjar-name "mcavoy.jar"
 

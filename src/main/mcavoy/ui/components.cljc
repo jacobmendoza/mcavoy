@@ -3,13 +3,18 @@
     [fulcro.client.primitives :as prim :refer [defsc]]
     #?(:cljs [fulcro.client.dom :as dom] :clj [fulcro.client.dom-server :as dom])))
 
-;; A good place to put reusable components
-(defsc PlaceholderImage [this {:keys [w h label]}]
-  (let [label (or label (str w "x" h))]
-    (dom/svg {:width w :height h}
-      (dom/rect {:width w :height h :style {:fill        "rgb(200,200,200)"
-                                            :strokeWidth 2
-                                            :stroke      "black"}})
-      (dom/text {:textAnchor "middle" :x (/ w 2) :y (/ h 2)} label))))
+(defsc ServerMessage [this {:keys [db/id message]}]
+  {:query [:db/id :message]
+   :ident [:messages/by-id :db/id]}
+  (dom/div "Message: " id " - " (str message)))
 
-(def ui-placeholder (prim/factory PlaceholderImage))
+(def ui-server-message (prim/factory ServerMessage {:keyfn :db/id}))
+
+(defsc ServerMessagesList [this {:keys [name messages] :as props}]
+  {:query [:name {:messages (prim/get-query ServerMessage)}]
+   :ident [:list/by-name :name]}
+  (dom/div
+    (dom/h1 name)
+    (mapv #(ui-server-message {:db/id (:db/id %) :message (:message %)}) messages)))
+
+(def ui-server-messages-list (prim/factory ServerMessagesList))

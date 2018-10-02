@@ -15,7 +15,7 @@
                           (Thread/sleep 10000)
                           (let [cids (some-> websockets :connected-uids deref :any)]
                             (doseq [cid cids]
-                              (wp/push websockets cid :time-change {:time (Date.)})))
+                              (wp/push websockets cid :base-message {:db/id (rand-int 30) :message (Date.)})))
                           (recur)))]
       (.start t)
       (assoc this :thread t)))

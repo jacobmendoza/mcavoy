@@ -6,11 +6,9 @@
     [mcavoy.api.mutations :as api]
     [fulcro.client.primitives :as prim :refer [defsc]]
     [fulcro.i18n :as i18n :refer [tr trf]]
-    [mcavoy.ui.components :refer [ui-placeholder]]))
+    [mcavoy.ui.components :as components :refer [ui-server-messages-list]]))
 
-;; The main UI of your application
-
-(defsc Root [this props]
+(defsc Root [this {:keys [selected-list] :as props}]
+  {:query [{:selected-list (prim/get-query components/ServerMessagesList)}]}
   (dom/div
-    (dom/h1 "Test")
-    (ui-placeholder)))
+    (ui-server-messages-list selected-list)))

@@ -1,7 +1,10 @@
 (ns mcavoy.client
   (:require [fulcro.client :as fc]
             [fulcro.i18n :as i18n]
-            [fulcro.websockets :as fw]))
+            [fulcro.websockets :as fw]
+            [taoensso.timbre :as timbre]
+            [fulcro.client.primitives :as prim]
+            [mcavoy.api.mutations :as mutations]))
 
 (defn message-format [{:keys [::i18n/localized-format-string ::i18n/locale ::i18n/format-options]}]
   (let [locale-str (name locale)
@@ -9,8 +12,17 @@
         formatter  (js/IntlMessageFormat. localized-format-string locale-str)]
     (.format formatter (clj->js format-options))))
 
-(declare push-handler)
-(declare state-callback)
+(declare app)
+
+(defn push-handler [msg]
+  (when-let [reconciler (some-> app deref :reconciler)]
+    (prim/transact! reconciler `[(mutations/process-message ~msg)])
+    ))
+
+(defn state-callback [param param2]
+  (when-let [reconciler (some-> app deref :reconciler)]
+    (prim/transact! reconciler `[(mutations/initialize-db)])
+    (println "Connection status changed" param param2)))
 
 (defonce app (atom (fc/new-fulcro-client
                      :reconciler-options {:shared    {::i18n/message-formatter message-format}
@@ -22,10 +34,3 @@
                                             :state-callback state-callback
                                             :global-error-callback (fn [& args] (apply println "Network error " args))})})))
 
-(defn push-handler [msg]
-  (when-let [reconciler (some-> app deref :reconciler)]
-    (println "New message received " msg)))
-
-(defn state-callback [param param2]
-  (when-let [reconciler (some-> app deref :reconciler)]
-    (println "Connection status changed" param param2)))
