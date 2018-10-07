@@ -16,7 +16,12 @@
                  ; only required if you want to use this for tests
                  [fulcrologic/fulcro-spec "2.1.0-1" :scope "test" :exclusions [fulcrologic/fulcro]]
                  [fulcrologic/fulcro-inspect "2.2.3"]
-                 [com.taoensso/timbre "4.10.0"]]
+                 [com.taoensso/timbre "4.10.0"]
+                 [twitter-api "1.8.0"]
+                 [clojure.jdbc/clojure.jdbc-c3p0 "0.3.3"]
+                 [org.clojure/java.jdbc      "0.6.1"]
+                 [mysql/mysql-connector-java "5.1.38"]
+                 [clj-time "0.14.4"]]
 
   :uberjar-name "mcavoy.jar"
 
