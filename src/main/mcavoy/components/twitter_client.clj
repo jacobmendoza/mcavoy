@@ -4,16 +4,16 @@
         [twitter.callbacks.handlers]
         [twitter.api.streaming])
   (:require [taoensso.timbre :as timbre]
-            [jdbc.pool.c3p0 :as pool]
+            [jdbc.pool.c3p0]
             [com.stuartsierra.component :as component]
             [clojure.data.json :as json]
-            [http.async.client :as ac]
+            [http.async.client]
             [taoensso.timbre :as timbre]
             [mcavoy.api.persistence :as persistence]
             [clojure.walk :refer [keywordize-keys]])
   (:import [twitter.callbacks.protocols AsyncStreamingCallback]))
 
-(defn- process-tweet [_ tweet]
+(defn- process-tweet [database tweet]
   (try
     (let [json (keywordize-keys (json/read-str (clojure.string/trim-newline (str tweet))))]
       (if (contains? json :retweeted_status)
@@ -27,7 +27,7 @@
   (start [component]
     (let [credentials (make-oauth-creds)
 
-          ^:dynamic *custom-streaming-callback* (AsyncStreamingCallback. process-tweet
+          ^:dynamic *custom-streaming-callback* (AsyncStreamingCallback. #(process-tweet database %2)
                                                                          (comp println response-return-everything)
                                                                          exception-print)
           filter (statuses-filter :params {:follow "7996082"}
