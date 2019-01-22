@@ -16,8 +16,7 @@
 
 (defn push-handler [msg]
   (when-let [reconciler (some-> app deref :reconciler)]
-    (prim/transact! reconciler `[(mutations/process-message ~msg)])
-    ))
+    (prim/transact! reconciler `[(mutations/process-message ~msg)])))
 
 (defn state-callback [param param2]
   (when-let [reconciler (some-> app deref :reconciler)]

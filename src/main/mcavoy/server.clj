@@ -4,7 +4,7 @@
     ; MUST require these, or you won't get them installed.
     [mcavoy.api.read]
     [mcavoy.api.mutations]
-    [mcavoy.websockets :refer [make-channel-listener make-broadcaster]]
+    [mcavoy.websockets :refer [make-channel-listener]]
     [fulcro.server :as server]
     [fulcro.websockets :as fw]
     [com.stuartsierra.component :as component]
@@ -16,10 +16,9 @@
   (make-fulcro-server
     :parser-injections #{:config}
     :config-path config
-    :components {:database         (component/using (db-component/->DatabaseManager) [:config])
-                 :twitter-client   (component/using (twitter-client-component/->TwitterClient {}) [:database])
+    :components {:database         (component/using (db-component/->DatabaseManager {}) [:config])
+                 :twitter-client   (component/using (twitter-client-component/->TwitterClient {} {} {}) [:config :database :websockets])
                  :websockets       (fw/make-websockets (server/fulcro-parser) {})
-                 :broadcaster      (make-broadcaster)
                  :channel-listener (make-channel-listener)
                  :ws-adapter       (fw/make-easy-server-adapter)}))
 

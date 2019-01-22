@@ -6,17 +6,24 @@
             [clojure.walk :as walk]
             [clojure.string :as str]))
 
-(defrecord DatabaseManager []
+(def local-dev-db-settings
+  {:classname   "com.mysql.jdbc.Driver"
+   :subprotocol "mysql"
+   :subname     "//localhost:3306/mcavoy?zeroDateTimeBehavior=convertToNull&useSSL=false"
+   :user        "root"
+   :password    ""})
+
+(defn get-database-connection [db-settings]
+  (pool/make-datasource-spec db-settings))
+
+(defrecord DatabaseManager [config]
   component/Lifecycle
 
   (start [component]
     (timbre/info "Starting manager component")
-    (assoc component :connection (pool/make-datasource-spec
-                                   {:classname   "com.mysql.jdbc.Driver"
-                                    :subprotocol "mysql"
-                                    :subname     "//localhost:3306/mcavoy?zeroDateTimeBehavior=convertToNull&useSSL=false"
-                                    :user        "root"
-                                    :password    ""})))
+    (let [db-settings (:database (:value config))]
+      (assoc component :connection (get-database-connection db-settings))))
 
   (stop [_]
     (timbre/info "Stopping manager component")))
+

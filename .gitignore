@@ -16,3 +16,6 @@ package-lock.json
 resources/private
 .lein-repl-history
 resources/i18n/i18n.js
+
+src/main/config/dev.edn
+src/main/config/prod.edn

@@ -1,0 +1,23 @@
+{:port            4567
+
+ :database        {
+                   :classname   "com.mysql.jdbc.Driver"
+                   :subprotocol "mysql"
+                   :subname     "//localhost:3306/mcavoy?zeroDateTimeBehavior=convertToNull&useSSL=false"
+                   :user        "root"
+                   :password    ""}
+
+
+ :twitter-api-credentials {:app-key           ""
+                           :app-secret        ""
+                           :user-token        ""
+                           :user-token-secret ""}
+
+ :media-to-follow [{:id 759251 :name "CNN"}
+                   {:id 87818409 :name "The Guardian"}
+                   {:id 807095 :name "NY Times"}
+                   {:id 104237736 :name "Bloomberg"}
+                   {:id 87416722 :name "Sky News Break"}
+                   {:id 51241574 :name "Associated Press"}
+                   {:id 104237736 :name "Bloomberg"}
+                   {:id 34713362 :name "Bloomberg Business"}]}

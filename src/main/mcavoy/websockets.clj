@@ -5,26 +5,7 @@
                                                         add-listener
                                                         remove-listener
                                                         client-added
-                                                        client-dropped]])
-  (:import (java.util Date)))
-
-(defrecord Broadcaster [websockets ^Thread thread]
-  component/Lifecycle
-  (start [this]
-    (let [t (new Thread (fn []
-                          (Thread/sleep 10000)
-                          (let [cids (some-> websockets :connected-uids deref :any)]
-                            (doseq [cid cids]
-                              (wp/push websockets cid :base-message {:db/id (rand-int 30) :message (Date.)})))
-                          (recur)))]
-      (.start t)
-      (assoc this :thread t)))
-  (stop [this] (.stop thread)))
-
-(defn make-broadcaster []
-  (component/using
-    (map->Broadcaster {})
-    [:websockets]))
+                                                        client-dropped]]))
 
 (defrecord ChannelListener [websockets]
   WSListener
