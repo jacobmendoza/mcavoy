@@ -3,19 +3,20 @@
     [fulcro.client.primitives :as prim :refer [defsc]]
     #?(:cljs [fulcro.client.dom :as dom] :clj [fulcro.client.dom-server :as dom])))
 
-(defsc ServerMessage [this {:keys [id text user-name user-image relevance]}]
-  {:query [:id :text :user-name :relevance :user-image]
+(defsc ServerMessage [this {:keys [id text source relevance]}]
+  {:query [:id :text :relevance :source]
    :ident [:messages/by-id :id]}
-  (let [{:keys [count delta engagement label]} relevance]
+  (let [{:keys [count count-ratio delta engagement label]} relevance]
     (dom/div
       (dom/div {:id id :class "news-report"}
                (dom/div {:class "source-container"}
                         (dom/div
-                          (dom/img {:src user-image :style {:paddingRight "8px" :width "12px" :height "12px"}})
-                          (dom/span user-name)
+                          (dom/img {:src (:image source) :style {:paddingRight "8px" :width "12px" :height "12px"}})
+                          (dom/span (:name source))
                           (dom/span (str id))
                           (dom/span engagement)
-                          (dom/span delta)))
+                          (dom/span delta)
+                          (dom/span count-ratio)))
 
                (dom/div {:class "text-container"}
                         (dom/span {:class "relevance-count"} (dom/b count))
@@ -27,7 +28,7 @@
   {:query [:name {:messages (prim/get-query ServerMessage)}]
    :ident [:list/by-name :name]}
   (dom/div
-    (dom/div {:class "menu-bar"}
+    (dom/div {:className "menu-bar"}
       (dom/h1 "frenchpress"))
     (mapv #(ui-server-message %) messages)))
 

@@ -62,15 +62,18 @@
     (-> news-report
         (merge {:created-at (str created-at)
                 :updated-at (str updated-at)
-                :relevance {:count (:count last-version)
-                            :delta (if (nil? previous-version)
-                                     0
-                                     (float (/
-                                              (- (:count last-version) (:count previous-version))
-                                              (or seconds 1))))
+                :relevance  {:count       (:count last-version)
+                             :count-ratio (float (/
+                                                   (:count last-version)
+                                                   (:reach last-version)))
+                             :delta       (if (nil? previous-version)
+                                            0
+                                            (float (/
+                                                     (- (:count last-version) (:count previous-version))
+                                                     (or seconds 1))))
 
-                            :engagement (:engagement last-version)
-                            :label "green"}})
+                             :engagement  (:engagement last-version)
+                             :label       "green"}})
         (dissoc :versions))))
 
 
