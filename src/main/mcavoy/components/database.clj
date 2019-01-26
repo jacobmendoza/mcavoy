@@ -13,8 +13,9 @@
    :user        "root"
    :password    ""})
 
-(defn get-database-connection [db-settings]
-  (pool/make-datasource-spec db-settings))
+(defn get-database-connection
+  ([] (get-database-connection local-dev-db-settings))
+  ([db-settings] (pool/make-datasource-spec db-settings)))
 
 (defrecord DatabaseManager [config]
   component/Lifecycle

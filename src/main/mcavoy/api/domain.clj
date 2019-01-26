@@ -1,19 +1,17 @@
 (ns mcavoy.api.domain
   (:require [mcavoy.api.util :as u]
             [clj-time.core :as t]
-            [clj-time.coerce :as c]
-            [clj-time.format :as f]
             [taoensso.timbre :as timbre]))
 
 (defn build-news-report-from-notification
-  [{:keys [id created-at text user-id user-name user-image count engagement]}]
+  [{:keys [id created-at text source count engagement]}]
   {:id            id
    :created-at    created-at
    :updated-at    created-at
+   :source        {:id    (:id source)
+                   :name  (:name source)
+                   :image (:image source)}
    :text          text
-   :user-id       user-id
-   :user-name     user-name
-   :user-image    user-image
    :is-persisted? false
    :versions      [{:count      count
                     :delta      0
@@ -22,22 +20,22 @@
                     :created-at created-at}]})
 
 (defn build-news-report-from-persistence
-  [{:keys [base-row version-rows]}]
+  [{:keys [base-row source-row version-rows]}]
   (let [last-version (first version-rows)]
-    {:id         (:id base-row)
-     :created-at (:created-at base-row)
-     :updated-at (:created-at last-version)
-     :text       (:text base-row)
-     :user-id    (:user-id base-row)
-     :user-name  (:user-name base-row)
-     :user-image (:user-image base-row)
+    {:id            (:id base-row)
+     :created-at    (:created-at base-row)
+     :updated-at    (:created-at last-version)
+     :text          (:text base-row)
+     :source        {:id    (:user-id source-row)
+                     :name  (:name source-row)
+                     :image (:image source-row)}
      :is-persisted? true
-     :versions   (map (fn [v]
-                        {:count      (:relevance-count v)
-                         :engagement (:relevance-count v)
-                         :label      (:label v)
-                         :created-at (:created-at v)})
-                      version-rows)}))
+     :versions      (map (fn [v]
+                           {:count      (:relevance-count v)
+                            :engagement (:relevance-count v)
+                            :label      (:label v)
+                            :created-at (:created-at v)})
+                         version-rows)}))
 
 (defn update-relevance
   [{:keys [is-persisted? versions] :as news-report} {:keys [created-at count engagement]}]
@@ -100,4 +98,4 @@
                 (save-to-storage)
                 (build-view-model))))))
     (catch Exception e
-      (timbre/info "General error handler for processing"))))
+      (timbre/info "General error handler for processing" e))))

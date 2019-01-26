@@ -37,9 +37,9 @@
        :id         id
        :created-at (f/parse twitter-date-formatted created_at)
        :text       text
-       :user-id    (:id user)
-       :user-name  (:name user)
-       :user-image (:profile_image_url user)
+       :source     {:id    (:id user)
+                    :name  (:name user)
+                    :image (:profile_image_url user)}
        :count      retweet_count
        :engagement (+ retweet_count favorite_count)})
     {:valid? false}))
@@ -58,8 +58,8 @@
       {})))
 
 (defn process-tweet [db-conn websockets tweet]
-  (let [storage-provider {:read-from-storage (partial persistence/retrieve-persistence-rows db-conn)
-                          :save-to-storage   (partial persistence/upsert-news-report! db-conn)}]
+  (let [storage-provider {:read-from-storage      (partial persistence/retrieve-persistence-rows db-conn)
+                          :save-to-storage        (partial persistence/upsert-news-report! db-conn)}]
 
     (persistence/insert-twitter-raw-information! db-conn tweet)
 
