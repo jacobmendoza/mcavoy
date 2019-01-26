@@ -39,7 +39,8 @@
        :text       text
        :source     {:id    (:id user)
                     :name  (:name user)
-                    :image (:profile_image_url user)}
+                    :image (:profile_image_url user)
+                    :reach (:followers_count user)}
        :count      retweet_count
        :engagement (+ retweet_count favorite_count)})
     {:valid? false}))

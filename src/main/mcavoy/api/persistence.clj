@@ -48,6 +48,7 @@
         update-to-db {:news-report-id  id
                       :created-at (:created-at last-version)
                       :relevance-count (:count last-version)
+                      :source-reach    (:reach last-version)
                       :severity-label  (:label last-version)}]
     (try
 

@@ -14,8 +14,8 @@
    :text          text
    :is-persisted? false
    :versions      [{:count      count
-                    :delta      0
                     :engagement engagement
+                    :reach      (:reach source)
                     :label      "green"
                     :created-at created-at}]})
 
@@ -33,16 +33,18 @@
      :versions      (map (fn [v]
                            {:count      (:relevance-count v)
                             :engagement (:relevance-count v)
+                            :reach      (:source-reach v)
                             :label      (:label v)
                             :created-at (:created-at v)})
                          version-rows)}))
 
 (defn update-relevance
-  [{:keys [is-persisted? versions] :as news-report} {:keys [created-at count engagement]}]
+  [{:keys [is-persisted? versions] :as news-report} {:keys [created-at count source engagement]}]
   (if-not is-persisted?
     news-report
     (let [new-update {:count count
                       :engagement engagement
+                      :reach (:reach source)
                       :label "green"
                       :created-at created-at}]
       (assoc news-report :versions (conj versions new-update)))))
